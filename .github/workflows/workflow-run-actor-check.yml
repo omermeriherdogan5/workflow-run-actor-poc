@@ -1,0 +1,27 @@
+name: Workflow Run Actor Check
+
+on:
+  workflow_run:
+    workflows: ["Unprivileged PR CI"]
+    types: [completed]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print workflow_run actor context
+        run: |
+          echo "github.actor=${{ github.actor }}"
+          echo "github.triggering_actor=${{ github.triggering_actor }}"
+          echo "github.event.sender.login=${{ github.event.sender.login }}"
+          echo "github.event.workflow_run.actor.login=${{ github.event.workflow_run.actor.login }}"
+          echo "github.event.workflow_run.triggering_actor.login=${{ github.event.workflow_run.triggering_actor.login }}"
+          echo "github.event.workflow_run.event=${{ github.event.workflow_run.event }}"
+          echo "github.event.workflow_run.conclusion=${{ github.event.workflow_run.conclusion }}"
+          echo "github.event.workflow_run.head_branch=${{ github.event.workflow_run.head_branch }}"
+          echo "github.event.workflow_run.head_repository.full_name=${{ github.event.workflow_run.head_repository.full_name }}"
+          echo "github.event.workflow_run.head_sha=${{ github.event.workflow_run.head_sha }}"
