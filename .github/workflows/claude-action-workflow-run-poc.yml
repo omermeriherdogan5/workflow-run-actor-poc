@@ -1,0 +1,24 @@
+name: Claude Action Workflow Run PoC
+
+on:
+  workflow_run:
+    workflows: ["Unprivileged PR CI"]
+    types: [completed]
+
+permissions:
+  contents: write
+  issues: write
+  id-token: write
+
+jobs:
+  poc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Run claude-code-action with fake auth
+        uses: anthropics/claude-code-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          anthropic_api_key: "sk-ant-fake-for-access-control-poc"
+          prompt: "Say hello. This is an access-control PoC."
